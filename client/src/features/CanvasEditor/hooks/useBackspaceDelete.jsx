@@ -4,7 +4,6 @@ import { useEffect } from "react"
 export default function useBackspaceDelete(canvas) {
   const removeSelectedObject = () => {
     if (canvas) {
-      console.log(canvas, Object.keys(canvas).filter(key => typeof canvas[key] === 'function'), canvas.getActiveObject);
       const activeObject = canvas.getActiveObject()
       const activeSelection = canvas.getActiveObjects()
 
