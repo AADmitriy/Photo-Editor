@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import { Canvas } from "fabric"
+import { Canvas, FabricObject } from "fabric"
 import CanvasContext from '@/features/CanvasEditor/context'
 import useBackspaceDelete from './hooks/useBackspaceDelete'
 import FabricHistory from './FabricHistory'
@@ -29,6 +29,8 @@ export default function CanvasEditor() {
         setCanUndo(canUndo)
         setCanRedo(canRedo)
       }
+
+      FabricObject.customProperties = ['id', 'zIndex'];
       
       const history = new FabricHistory(initCanvas, onHistoryChange)
 
@@ -44,9 +46,6 @@ export default function CanvasEditor() {
       initCanvas.on("object:modified", () => {saveState()})
       initCanvas.on("object:removed", () => {saveState()})
       initCanvas.on("path:created", () => {saveState()})
-
-      // initCanvas.undo = () => history.undo()
-      // initCanvas.redo = () => history.redo()
 
       setUndoRedo({
         undo: () => history.undo(),

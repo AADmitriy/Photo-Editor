@@ -6,6 +6,7 @@ import CursorBtn from '@/pages/Editor/CursorBtn'
 import RedoBtn from '@/pages/Editor/RedoBtn'
 import SelectImageBtn from '@/pages/Editor/SelectImageBtn'
 import UndoBtn from '@/pages/Editor/UndoBtn'
+import LayersList from '@/pages/Editor/LayersList'
 import React, { useState } from 'react'
 
 export default function EditorPage() {
@@ -16,8 +17,8 @@ export default function EditorPage() {
         <CanvasHistoryProvider>
           <div className="h-14 font-thin mt-0">EditorPage</div>
           <div className="relative flex-1 flex items-center justify-center min-h-0 p-1.5">
-            <div className="absolute z-10 left-6 top-5/12 p-1 rounded flex flex-col gap-2 bg-gray-300/50
-                            group [&>*]:px-2 [&>*]:py-2 [&>*]:bg-gray-500/25 [&>*]:w-min
+            <div className="absolute z-10 left-6 top-5/12 p-1 rounded flex flex-col gap-2 bg-gray-400/50
+                            group [&>*]:px-2 [&>*]:py-2 [&>*]:bg-gray-600/25 [&>*]:w-min
                                   [&>*]:disabled:opacity-50">
               <SelectImageBtn />
               <CursorBtn />
@@ -25,6 +26,7 @@ export default function EditorPage() {
               <UndoBtn />
               <RedoBtn />
             </div>
+            <LayersList />
             <div className="w-full h-full">
               <CanvasEditor />
             </div>
