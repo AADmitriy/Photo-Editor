@@ -1,4 +1,4 @@
-import CanvasContext from '@/features/CanvasEditor/context/CanvasContext'
+import CanvasContext from '../context/CanvasContext'
 import { Canvas } from 'fabric'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import ArrowUpIcon from '@/assets/arrowUp.svg?react'
@@ -154,9 +154,11 @@ export default function LayersList() {
   }, [canvasEditor])
 
   return (
-    <div className="absolute z-10 right-4 top-3/12 p-1 rounded flex flex-col gap-2 bg-gray-400">
+    <div className="p-1 rounded flex flex-col gap-2 bg-neutral-300 min-w-34 text-sm">
       <div className="flex justify-start items-center gap-4
-                      group [&>button]:bg-blue-200 [&>button]:p-2 [&>button]:disabled:bg-gray-100">
+                    [&>button]:bg-blue-200 [&>button]:p-1 [&>button]:disabled:bg-gray-100
+                      [&>button]:w-7 [&>button]:h-7
+                    [&_svg]:fill-black [&_svg]:max-h-full [&_svg]:max-w-full">
         <button disabled={isLayerUpBtnDisabled}
                 onClick={() => moveSelectedLayer(1)}>
           <ArrowUpIcon />
@@ -167,10 +169,10 @@ export default function LayersList() {
         </button>
       </div>
       <ul className="list-none">
-        {layers.map((obj, index) => (
+        {layers.map((obj) => (
           <li key={obj.id} 
-              className={`px-2 py-1.5 hover:bg-gray-200/50 rounded
-                          ${selectedLayers.some(layer => layer.id === obj.id) ? "bg-gray-200!" : ""}`}
+              className={`px-2 py-1.5 hover:bg-neutral-400/50 rounded
+                          ${selectedLayers.some(layer => layer.id === obj.id) ? "bg-neutral-400!" : ""}`}
               onClick={() => selectLayerInCanvas(obj.id)}>
             {obj.type} {`(${obj.zIndex})`}
           </li>

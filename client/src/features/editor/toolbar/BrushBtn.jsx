@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import BrushIcon from "@/assets/brush.svg?react"
-import CanvasContext from '@/features/CanvasEditor/context'
+import CanvasContext from '../context/CanvasContext'
 import { PencilBrush } from 'fabric'
 
 export default function BrushBtn() {

@@ -1,4 +1,4 @@
-import CanvasContext from '@/features/CanvasEditor/context'
+import CanvasContext from '../context/CanvasContext'
 import { FabricImage } from 'fabric'
 import React, { useContext } from 'react'
 import AddImageIcon from '@/assets/addImage.svg?react'

@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Canvas, FabricObject } from "fabric"
-import CanvasContext from '@/features/CanvasEditor/context'
 import useBackspaceDelete from './hooks/useBackspaceDelete'
+import CanvasContext from '../context/CanvasContext'
 import FabricHistory from './FabricHistory'
-import CanvasHistoryContext from '@/features/CanvasEditor/context/CanvasHistoryContext'
+import CanvasHistoryContext from '../context/CanvasHistoryContext'
 
 export default function CanvasEditor() {
   const wrapperRef = useRef()

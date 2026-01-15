@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import CursorIcon from '@/assets/cursor.svg?react'
-import CanvasContext from '@/features/CanvasEditor/context'
+import CanvasContext from '../context/CanvasContext'
 
 export default function CursorBtn() {
   const { canvasEditor } = useContext(CanvasContext)

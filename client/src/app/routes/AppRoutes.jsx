@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
-import HomePage from "@/pages/Home/HomePage";
-import EditorPage from "@/pages/Editor/EditorPage";
+import HomePage from "@/features/home";
+import EditorPage from "@/features/editor";
 
 
 export default function AppRoutes() {

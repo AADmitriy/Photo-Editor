@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import UndoIcon from '@/assets/undo.svg?react'
-import CanvasHistoryContext from '@/features/CanvasEditor/context/CanvasHistoryContext'
+import CanvasHistoryContext from '../context/CanvasHistoryContext'
 
 export default function UndoBtn() {
   const { canUndo, undo } = useContext(CanvasHistoryContext)
@@ -8,6 +8,7 @@ export default function UndoBtn() {
   const undoLastAction = () => {
     undo()
   }
+  
   return (
     <button disabled={ !canUndo }
             onClick={undoLastAction}>
