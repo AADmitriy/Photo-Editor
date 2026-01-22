@@ -1,7 +1,22 @@
 @import "tailwindcss";
 
+.toolbar-btn {
+  padding: .5rem;
+  width: min-content;
+}
+
+.toolbar-btn:hover {
+  background-color: #8e8e8e25;
+}
+
+.toolbar-btn:disabled {
+  opacity: 50%;
+}
+
 html, body {
   height: 100%;
   margin: 0;
   overflow: hidden;
 }
+
+

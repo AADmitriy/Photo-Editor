@@ -24,7 +24,7 @@ export default function SelectImageBtn() {
   }
 
   return (
-    <div>
+    <div className="toolbar-btn">
       <label htmlFor="image_input"><AddImageIcon /></label>
       <input 
         id="image_input"

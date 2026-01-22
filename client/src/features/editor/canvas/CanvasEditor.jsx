@@ -25,6 +25,14 @@ export default function CanvasEditor() {
         backgroundColor: "#eeeeee"
       })
 
+      initCanvas.on("before:transform", () => {
+        initCanvas.isObjectBeingModified = true;
+      });
+    
+      initCanvas.on("object:modified", () => {
+        initCanvas.isObjectBeingModified = false;
+      });
+
       const onHistoryChange = ({canUndo, canRedo}) => {
         setCanUndo(canUndo)
         setCanRedo(canRedo)

@@ -168,7 +168,7 @@ export default function LayersList() {
           <ArrowDownIcon />
         </button>
       </div>
-      <ul className="list-none">
+      <ul className="list-none max-h-52 overflow-y-scroll">
         {layers.map((obj) => (
           <li key={obj.id} 
               className={`px-2 py-1.5 hover:bg-neutral-400/50 rounded

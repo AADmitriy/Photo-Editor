@@ -10,7 +10,8 @@ export default function UndoBtn() {
   }
   
   return (
-    <button disabled={ !canUndo }
+    <button className="toolbar-btn"
+            disabled={ !canUndo }
             onClick={undoLastAction}>
       <UndoIcon />
     </button>

@@ -10,7 +10,8 @@ export default function RedoBtn() {
   }
 
   return (
-    <button disabled={ !canRedo }
+    <button className="toolbar-btn"
+            disabled={ !canRedo }
             onClick={redoLastAction}>
       <RedoIcon />
     </button>
