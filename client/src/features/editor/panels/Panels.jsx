@@ -6,24 +6,32 @@ import SettingsSlidersIcon from '@/assets/settingsSliders.svg?react'
 
 
 export default function Panels() {
-  const [showLayers, setShowLayers] = useState(false)
-  const [showSettings, setShowSettings] = useState(false)
+  const [activePanelId, setActivePanelId] = useState(null)
+
+  const toggleActivePanel = (panelId) => {
+    if (panelId === activePanelId) {
+      setActivePanelId(null)
+    }
+    else {
+      setActivePanelId(panelId)
+    }
+  }
 
   return (
     <div className="absolute z-10 right-4 top-3/12 flex gap-2">
-      <div className={showLayers ? "" : "hidden"}>
+      <div className={activePanelId === "layersList" ? "" : "hidden"}>
         <LayersList/>
       </div>
-      <div className={showSettings ? "" : "opacity-0"}>
+      <div className={activePanelId === "settings" ? "" : "hidden"}>
         <Settings/>
       </div>
       <div className="p-1 rounded flex flex-col bg-neutral-300 min-h-20 h-min
                       [&>button]:p-1 [&>button]:rounded [&>button]:hover:bg-neutral-400
                     [&_svg]:fill-black">
-        <button onClick={() => setShowLayers(prev => !prev)}>
+        <button onClick={() => toggleActivePanel("layersList")}>
           <LayersIcon />
         </button>
-        <button onClick={() => setShowSettings(prev => !prev)}>
+        <button onClick={() => toggleActivePanel("settings")}>
           <SettingsSlidersIcon />
         </button>
       </div>

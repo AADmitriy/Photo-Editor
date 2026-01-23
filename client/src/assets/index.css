@@ -19,4 +19,7 @@ html, body {
   overflow: hidden;
 }
 
+.bottom-transparent {
+  background: linear-gradient(to top, transparent 20%, #d4d4d4 21%);
+}
 

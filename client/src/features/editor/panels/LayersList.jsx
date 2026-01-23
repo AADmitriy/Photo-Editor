@@ -3,12 +3,21 @@ import { Canvas } from 'fabric'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import ArrowUpIcon from '@/assets/arrowUp.svg?react'
 import ArrowDownIcon from '@/assets/arrowDown.svg?react'
+import EyeIcon from "@/assets/eye.svg?react"
+import EyeOffIcon from "@/assets/eyeOff.svg?react"
 
 
 export default function LayersList() {
   const [layers, setLayers] = useState([])
   const [selectedLayers, setSelectedLayers] = useState([])
   const {canvasEditor} = useContext(CanvasContext)
+
+  const getSelectedObjects = () => {
+    const selectedLayersIds = new Set(selectedLayers.map(obj => obj.id))
+    const selectedObjects = canvasEditor.getObjects().filter(obj => selectedLayersIds.has(obj.id))
+
+    return selectedObjects
+  }
   
   const moveSelectedLayer = (direction) => {
     if (!selectedLayers.length === 1) return
@@ -44,19 +53,55 @@ export default function LayersList() {
       canvasEditor.setActiveObject(object)
 
       canvasEditor.renderAll()
-
       updateLayers()
     }
   }
 
+  const toggleSelectedLayersOpacity = () => {
+    if (selectedLayers.length === 0) return
+
+    const selectedObjects = getSelectedObjects()
+
+    for (const obj of selectedObjects) {
+      if (obj.opacity === 0) {
+        obj.opacity = obj.prevOpacity || 1
+        obj.prevOpacity = undefined
+      }
+      else {
+        obj.prevOpacity = obj.opacity
+        obj.opacity = 0
+      }
+    }
+
+    canvasEditor.renderAll()
+    updateLayers()
+  }
+
   const {
     isLayerUpBtnDisabled, 
-    isLayerDownBtnDisabled
+    isLayerDownBtnDisabled,
+    isSelectedLayersVisible,
+    isSelectedLayersInvisible
   } = useMemo( () => {
-    if (!(selectedLayers.length === 1 && canvasEditor)) {
+    if (!canvasEditor || selectedLayers.length === 0) {
       return {
         isLayerUpBtnDisabled: true,
-        isLayerDownBtnDisabled: true
+        isLayerDownBtnDisabled: true,
+        isSelectedLayersVisible: false,
+        isSelectedLayersInvisible: false
+      }
+    }
+
+    const selectedObjects = getSelectedObjects()
+    const isSelectedLayersVisible = selectedObjects.every(obj => obj.opacity !== 0)
+    const isSelectedLayersInvisible = selectedObjects.every(obj => obj.opacity === 0)
+
+    if (!(selectedLayers.length === 1)) {
+      return {
+        isLayerUpBtnDisabled: true,
+        isLayerDownBtnDisabled: true,
+        isSelectedLayersVisible,
+        isSelectedLayersInvisible
       }
     }
 
@@ -67,7 +112,9 @@ export default function LayersList() {
 
     return {
       isLayerUpBtnDisabled: objPos >= objects.length - 1,
-      isLayerDownBtnDisabled: objPos <= 0
+      isLayerDownBtnDisabled: objPos <= 0,
+      isSelectedLayersVisible,
+      isSelectedLayersInvisible
     }
 
   }, [selectedLayers, canvasEditor])
@@ -99,7 +146,8 @@ export default function LayersList() {
       .map((obj) => ({
         id: obj.id,
         type: obj.type,
-        zIndex: obj.zIndex
+        zIndex: obj.zIndex,
+        opacity: obj.opacity
       }))
       setLayers([...objects].reverse())
     }
@@ -156,8 +204,9 @@ export default function LayersList() {
   return (
     <div className="p-1 rounded flex flex-col gap-2 bg-neutral-300 min-w-34 text-sm">
       <div className="flex justify-start items-center gap-4
-                    [&>button]:bg-blue-200 [&>button]:p-1 [&>button]:disabled:bg-gray-100
-                      [&>button]:w-7 [&>button]:h-7
+                    [&>button]:bg-blue-200 [&>button]:p-1
+                      [&>button]:w-7 [&>button]:h-7 [&>button]:cursor-pointer
+                      [&>button]:disabled:bg-gray-100 [&>button]:disabled:cursor-auto
                     [&_svg]:fill-black [&_svg]:max-h-full [&_svg]:max-w-full">
         <button disabled={isLayerUpBtnDisabled}
                 onClick={() => moveSelectedLayer(1)}>
@@ -166,6 +215,10 @@ export default function LayersList() {
         <button disabled={isLayerDownBtnDisabled}
                 onClick={() => moveSelectedLayer(-1)}>
           <ArrowDownIcon />
+        </button>
+        <button disabled={!isSelectedLayersVisible && !isSelectedLayersInvisible}
+                onClick={() => toggleSelectedLayersOpacity()}>
+          {isSelectedLayersVisible ? <EyeIcon /> : <EyeOffIcon />}
         </button>
       </div>
       <ul className="list-none max-h-52 overflow-y-scroll">

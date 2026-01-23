@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import CanvasContext from '../context/CanvasContext'
 import Input from '@/components/ui/Input'
+import ColorInput from '@/components/ui/ColorInput'
 
 export default function Settings() {
   const [selectedObject, setSelectedObject] = useState(null)
@@ -9,29 +10,36 @@ export default function Settings() {
   const [angle, setAngle] = useState("")
   const [diameter, setDiameter] = useState("")
   const [color, setColor] = useState("")
+  const [opacity, setOpacity] = useState("")
+  const [stroke, setStroke] = useState("")
+  const [strokeWidth, setStrokeWidth] = useState("")
   const {canvasEditor} = useContext(CanvasContext)
 
-  const allFields = ["width", "height", "angle", "diameter", "color",]
+  const allFields = [
+    "width", "height", "diameter", 
+    "angle", 
+    "color", "opacity",
+    "stroke", "strokeWidth"
+  ]
 
   // const getObjectFields = (object) => {
   //   return allFields.filter(fieldName => fieldName in object)
   // }
 
   const filedNameToState = {
-    width,
-    height,
+    width, height, diameter,
     angle,
-    color,
-    diameter
+    color, opacity,
+    stroke, strokeWidth
   }
 
   const objectTypeToFields = {
-    "rect": ["width", "height", "color", "angle"],
-    "circle": ["diameter", "color", "angle"],
-    "triangle": ["width", "height", "color", "angle"],
-    "line": ["width", "height", "angle"],
-    "path": ["width", "height", "angle"],
-    "image": ["width", "height", "angle"],
+    "rect": ["width", "height", "color", "angle", "opacity", "stroke", "strokeWidth"],
+    "circle": ["diameter", "color", "angle", "opacity", "stroke", "strokeWidth"],
+    "triangle": ["width", "height", "color", "angle", "opacity", "stroke", "strokeWidth"],
+    "line": ["width", "height", "angle", "opacity"],
+    "path": ["width", "height", "angle", "opacity"],
+    "image": ["width", "height", "angle", "opacity"],
   }
 
   const fieldNameToFieldSet = {
@@ -40,14 +48,20 @@ export default function Settings() {
     "angle": (object) => {setAngle(Math.round(object.angle))},
     "color": (object) => {setColor(object?.fill || "")},
     "diameter": (object) => {setDiameter(Math.round(object.radius * 2 * object.scaleX))},
+    "opacity": (object) => {setOpacity(object.opacity)},
+    "stroke": (object) => {setStroke(object?.stroke || "")}, 
+    "strokeWidth": (object) => {setStrokeWidth(object.strokeWidth)}
   }
 
-  const fieldNameToFieldClean = {
+  const fieldNameToFieldClear = {
     "width": () => {setWidth("")},
     "height": () => {setHeight("")},
     "angle": () => {setAngle("")},
     "color": () => {setColor("")},
     "diameter": () => {setDiameter("")},
+    "opacity": () => {setOpacity("")},
+    "stroke": () => {setStroke("")}, 
+    "strokeWidth": () => {setStrokeWidth("")}
   }
 
 
@@ -66,8 +80,8 @@ export default function Settings() {
         setField(object)
       }
       else {
-        const cleanField = fieldNameToFieldClean[fieldName]
-        cleanField(object)
+        const cleanField = fieldNameToFieldClear[fieldName]
+        cleanField()
       }
     }
   }
@@ -77,11 +91,16 @@ export default function Settings() {
   }
 
   const clearSettings = () => {
-    setWidth("")
-    setHeight("")
-    setAngle("")
-    setColor("")
-    setDiameter("")
+    for (const fieldName of allFields) {
+      const clearField = fieldNameToFieldClear[fieldName]
+      clearField()
+    }
+    // setWidth("")
+    // setHeight("")
+    // setAngle("")
+    // setColor("")
+    // setDiameter("")
+    // setOpacity("")
   }
 
   const handleSelectionCleared = () => {
@@ -130,34 +149,67 @@ export default function Settings() {
       const intValue = getIntValueFromEvent(e)
       if (!selectedObject || intValue < 0) return;
 
-      selectedObject.set({width: intValue / selectedObject.scaleX})
       setWidth(intValue)
+      selectedObject.set({width: intValue / selectedObject.scaleX})
       canvasEditor.renderAll()
     },
     "height": (e) => {
       const intValue = getIntValueFromEvent(e)
       if (!selectedObject || intValue < 0) return;
 
-      selectedObject.set({height: intValue / selectedObject.scaleY})
       setHeight(intValue)
+      selectedObject.set({height: intValue / selectedObject.scaleY})
       canvasEditor.renderAll()
     },
     "angle": (e) => {
       const intValue = getIntValueFromEvent(e)
       if (!selectedObject || intValue < 0) return;
 
-      selectedObject.set({angle: intValue})
       setAngle(intValue)
+      selectedObject.set({angle: intValue})
       canvasEditor.renderAll()
     },
-    "color": (e) => {},
+    "color": (e) => {
+      if (!selectedObject) return;
+
+      const value = e.target.value
+
+      setColor(value)
+      selectedObject.set({fill: value})
+      canvasEditor.renderAll()
+    },
     "diameter": (e) => {
       const intValue = getIntValueFromEvent(e)
       if (!selectedObject || intValue < 0) return;
 
-      selectedObject.set({radius: intValue / 2 / selectedObject.scaleX})
-      // console.log(intValue, intValue / 2 / selectedObject.scaleX)
       setDiameter(intValue)
+      selectedObject.set({radius: intValue / 2 / selectedObject.scaleX})
+      canvasEditor.renderAll()
+    },
+    "opacity": (e) => {
+      if (!selectedObject) return;
+
+      const value = e.target.value
+
+      setOpacity(value)
+      selectedObject.set({opacity: value})
+      canvasEditor.renderAll()
+    },
+    "stroke": (e) => {
+      if (!selectedObject) return;
+
+      const value = e.target.value
+
+      setStroke(value)
+      selectedObject.set({stroke: value})
+      canvasEditor.renderAll()
+    },
+    "strokeWidth": (e) => {
+      const intValue = getIntValueFromEvent(e)
+      if (!selectedObject || intValue < 0) return;
+
+      setStrokeWidth(intValue)
+      selectedObject.set({strokeWidth: intValue})
       canvasEditor.renderAll()
     },
   }
@@ -167,21 +219,33 @@ export default function Settings() {
     changeField(e)
   }
 
-  
 
 
   return (
     <div className="px-1 pb-2.5 pt-1.5 rounded flex flex-col gap-2 bg-neutral-300 min-w-34 text-sm">
       {selectedObject && selectedObject.type in objectTypeToFields && (
         <>
-          {objectTypeToFields[selectedObject.type].map((fieldName) => (
-            <Input 
-              key={fieldName}
-              label={fieldName}
-              value={filedNameToState[fieldName] || 0}
-              onChange={(e) => handleFieldChange(e, fieldName)}
-            />
-          ))}
+          {objectTypeToFields[selectedObject.type].map((fieldName) => {
+            if (fieldName === "color" ||
+                fieldName === "stroke") {
+              return (
+                <ColorInput
+                  key={fieldName}
+                  label={fieldName}
+                  value={filedNameToState[fieldName] || 0}
+                  onChange={(e) => handleFieldChange(e, fieldName)}
+                />
+              )
+            }
+            return (
+              <Input 
+                key={fieldName}
+                label={fieldName}
+                value={filedNameToState[fieldName] || 0}
+                onChange={(e) => handleFieldChange(e, fieldName)}
+              />
+            )
+          })}
         </>
       )}
       {!selectedObject && (
