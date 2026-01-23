@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Canvas, FabricObject } from "fabric"
-import useBackspaceDelete from './hooks/useBackspaceDelete'
+import useKeyboardShortcuts from './hooks/useKeyboardShortcuts'
 import CanvasContext from '../context/CanvasContext'
 import FabricHistory from './FabricHistory'
 import CanvasHistoryContext from '../context/CanvasHistoryContext'
@@ -84,7 +84,7 @@ export default function CanvasEditor() {
     }
   }, [])
 
-  useBackspaceDelete(canvasEditor)
+  useKeyboardShortcuts(canvasEditor, undo, redo)
 
   return (
     <div ref={wrapperRef} className="w-full h-full">

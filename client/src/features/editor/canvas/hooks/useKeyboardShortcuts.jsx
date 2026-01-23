@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 
 
-export default function useBackspaceDelete(canvas) {
+export default function useKeyboardShortcuts(canvas, undo, redo) {
   const removeSelectedObject = () => {
     if (canvas) {
       const activeObject = canvas.getActiveObject()
@@ -44,6 +44,14 @@ export default function useBackspaceDelete(canvas) {
 
         removeSelectedObject()
       }
+      else if (e.ctrlKey && (e.key === "z" || e.key === "Z")) {
+        if (e.shiftKey) {
+          redo()
+        }
+        else {
+          undo()
+        }
+      }
     }
 
     window.addEventListener("keydown", handleKeyDown)
@@ -51,5 +59,5 @@ export default function useBackspaceDelete(canvas) {
     return () => {
       window.removeEventListener("keydown", handleKeyDown)
     }
-  }, [canvas])
+  }, [canvas, undo, redo])
 }
