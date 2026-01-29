@@ -4,6 +4,7 @@ import useKeyboardShortcuts from './hooks/useKeyboardShortcuts'
 import CanvasContext from '../context/CanvasContext'
 import FabricHistory from './FabricHistory'
 import CanvasHistoryContext from '../context/CanvasHistoryContext'
+import CanvasZoomWrapper from './CanvasZoomWrapper'
 
 export default function CanvasEditor() {
   const wrapperRef = useRef()
@@ -60,25 +61,11 @@ export default function CanvasEditor() {
         redo: () => history.redo()
       })
 
-      const resizeCanvas = () => {
-        const { clientWidth, clientHeight } = wrapperRef.current;
-        
-        console.log("set canvas to ", clientHeight, clientHeight)
-        initCanvas.set({
-          width: clientWidth,
-          height: clientHeight
-        })
-        initCanvas.renderAll();
-      };
-  
-      resizeCanvas();
-      window.addEventListener("resize", resizeCanvas);
   
       setCanvas(initCanvas)
       setCanvasEditor(initCanvas)
 
       return () => {
-        window.removeEventListener("resize", resizeCanvas);
         initCanvas.dispose()
       }
     }
@@ -87,8 +74,10 @@ export default function CanvasEditor() {
   useKeyboardShortcuts(canvasEditor, undo, redo)
 
   return (
-    <div ref={wrapperRef} className="w-full h-full">
-      <canvas id="canvas" ref={canvasRef}></canvas>
-    </div>
+    <CanvasZoomWrapper>
+      <div ref={wrapperRef} id="canvas" className="w-full h-full">
+        <canvas id="canvas" ref={canvasRef}></canvas>
+      </div>
+    </CanvasZoomWrapper>
   )
 }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import BrushBtn from './BrushBtn'
 import CursorBtn from './CursorBtn'
+import MoveCanvasBtn from './MoveCanvasBtn/MoveCanvasBtn'
 import RedoBtn from './RedoBtn'
 import SelectImageBtn from './SelectImageBtn'
 import ShapeBtn from './ShapeBtn'
@@ -26,6 +27,10 @@ export default function Toolbar() {
       <ShapeBtn
         activeMenuId={activeMenuId}
         setActiveMenuId={setActiveMenuId}
+        activeToolId={activeToolId}
+        setActiveToolId={setActiveToolId}
+      />
+      <MoveCanvasBtn
         activeToolId={activeToolId}
         setActiveToolId={setActiveToolId}
       />
