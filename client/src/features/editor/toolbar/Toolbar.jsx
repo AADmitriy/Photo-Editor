@@ -14,7 +14,12 @@ export default function Toolbar() {
   return (
     <div className="absolute z-10 left-6 top-3/12 p-1 rounded flex flex-col gap-1 bg-neutral-300
                   [&_svg]:fill-black">
-      <SelectImageBtn />
+      <SelectImageBtn 
+        activeMenuId={activeMenuId}
+        setActiveMenuId={setActiveMenuId}
+        activeToolId={activeToolId}
+        setActiveToolId={setActiveToolId}
+      />
       <CursorBtn 
         activeToolId={activeToolId}
         setActiveToolId={setActiveToolId}

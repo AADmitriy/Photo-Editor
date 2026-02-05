@@ -7,6 +7,8 @@ export default function Settings() {
   const [selectedObject, setSelectedObject] = useState(null)
   const [width, setWidth] = useState("")
   const [height, setHeight] = useState("")
+  const [scaleX, setScaleX] = useState("")
+  const [scaleY, setScaleY] = useState("")
   const [angle, setAngle] = useState("")
   const [diameter, setDiameter] = useState("")
   const [color, setColor] = useState("")
@@ -17,6 +19,7 @@ export default function Settings() {
 
   const allFields = [
     "width", "height", "diameter", 
+    "scaleX", "scaleY",
     "angle", 
     "color", "opacity",
     "stroke", "strokeWidth"
@@ -28,6 +31,7 @@ export default function Settings() {
 
   const filedNameToState = {
     width, height, diameter,
+    scaleX, scaleY,
     angle,
     color, opacity,
     stroke, strokeWidth
@@ -39,12 +43,14 @@ export default function Settings() {
     "triangle": ["width", "height", "color", "angle", "opacity", "stroke", "strokeWidth"],
     "line": ["width", "height", "angle", "opacity"],
     "path": ["width", "height", "angle", "opacity"],
-    "image": ["width", "height", "angle", "opacity"],
+    "image": ["width", "height", "scaleX", "scaleY", "angle", "opacity"],
   }
 
   const fieldNameToFieldSet = {
     "width": (object) => {setWidth(Math.round(object.width * object.scaleX))},
     "height": (object) => {setHeight(Math.round(object.height * object.scaleY))},
+    "scaleX": (object) => {setScaleX(object.scaleX)},
+    "scaleY": (object) => {setScaleY(object.scaleY)},
     "angle": (object) => {setAngle(Math.round(object.angle))},
     "color": (object) => {setColor(object?.fill || "")},
     "diameter": (object) => {setDiameter(Math.round(object.radius * 2 * object.scaleX))},
@@ -56,6 +62,8 @@ export default function Settings() {
   const fieldNameToFieldClear = {
     "width": () => {setWidth("")},
     "height": () => {setHeight("")},
+    "scaleX": () => {setScaleX("")},
+    "scaleY": () => {setScaleY("")},
     "angle": () => {setAngle("")},
     "color": () => {setColor("")},
     "diameter": () => {setDiameter("")},
@@ -159,6 +167,24 @@ export default function Settings() {
 
       setHeight(intValue)
       selectedObject.set({height: intValue / selectedObject.scaleY})
+      canvasEditor.renderAll()
+    },
+    "scaleX": (e) => {
+      if (!selectedObject) return;
+
+      const value = e.target.value
+
+      setScaleX(value)
+      selectedObject.set({scaleX: value})
+      canvasEditor.renderAll()
+    },
+    "scaleY": (e) => {
+      if (!selectedObject) return;
+
+      const value = e.target.value
+
+      setScaleY(value)
+      selectedObject.set({scaleY: value})
       canvasEditor.renderAll()
     },
     "angle": (e) => {

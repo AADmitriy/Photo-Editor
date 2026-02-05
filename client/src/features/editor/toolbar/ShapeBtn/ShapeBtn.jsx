@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import RectIcon from '@/assets/rectangle.svg?react'
 import CircleIcon from '@/assets/circle.svg?react'
 import TriangleIcon from '@/assets/triangle.svg?react'
@@ -8,6 +8,7 @@ import useDrawingHandlers from './hooks/useDrawingHandlers'
 
 
 export default function ShapeBtn({activeMenuId, setActiveMenuId, activeToolId, setActiveToolId}) {
+  const shapeToolId = "shape"
   const shapeMenuId = "ShapeMenu"
   const isMenuOpen = activeMenuId === shapeMenuId
   const {canvasEditor} = useContext(CanvasContext)
@@ -22,47 +23,43 @@ export default function ShapeBtn({activeMenuId, setActiveMenuId, activeToolId, s
     canvasEditor.isDrawingMode = false;
   }
 
-  const openShapeMenu = () => {
-    setActiveMenuId(shapeMenuId)
-  }
-
-  const closeShapeMenu = () => {
+  const handleChoseShapeBtn = (shape) => {
+    choseCurrentShape(shape); 
     setActiveMenuId(null)
   }
 
-
   const handleShapeBtnClick = () => {
     choseCurrentShape(currentShape); 
-    openShapeMenu();
-    setActiveToolId("shape")
+    setActiveMenuId(shapeMenuId);
+    setActiveToolId(shapeToolId)
   }
 
   return (
     <div className="relative">
       <button className={`toolbar-btn 
-                          ${activeToolId === "shape" ? "bg-blue-400/50! hover:bg-blue-500/50!" : ""}`}
+                          ${activeToolId === shapeToolId ? "bg-blue-400/50! hover:bg-blue-500/50!" : ""}`}
               onClick={handleShapeBtnClick}>
         {currentShape === "rect" && <RectIcon />}
         {currentShape === "circle" && <CircleIcon />}
         {currentShape === "triangle" && <TriangleIcon />}
         {currentShape === "line" && <LineIcon />}
       </button>
-      { isMenuOpen && 
+      { isMenuOpen && activeToolId === shapeToolId &&
       <div className="absolute top-0 -right-24
                       flex flex-col bg-white text-sm font-thin
                       [&_button]:flex [&_button]:items-center [&_button]:gap-2
                       [&_button]:px-0.5 [&_button]:hover:bg-neutral-200
                       [&_svg]:w-5 [&_svg]:fill-neutral-500">
-        <button onClick={() => {choseCurrentShape("rect"); closeShapeMenu()}}>
+        <button onClick={() => {handleChoseShapeBtn("rect")}}>
           <RectIcon /> Rectangle
         </button>
-        <button onClick={() => {choseCurrentShape("circle"); closeShapeMenu()}}>
+        <button onClick={() => {handleChoseShapeBtn("circle")}}>
           <CircleIcon /> Circle
         </button>
-        <button onClick={() => {choseCurrentShape("triangle"); closeShapeMenu()}}>
+        <button onClick={() => {handleChoseShapeBtn("triangle")}}>
           <TriangleIcon /> Triangle
         </button>
-        <button onClick={() => {choseCurrentShape("line"); closeShapeMenu()}}>
+        <button onClick={() => {handleChoseShapeBtn("line")}}>
           <LineIcon /> Line
         </button>
       </div>

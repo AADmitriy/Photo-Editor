@@ -4,7 +4,7 @@ const CanvasZoomContext = createContext()
 
 
 export function CanvasZoomProvider({ children }) {
-  const [offset, setOffset] = useState({x: 10, y: 10})
+  const [offset, setOffset] = useState({x: 175, y: 150})
   const [scale, setScale] = useState(0.8)
 
   const value = useMemo(() => ({

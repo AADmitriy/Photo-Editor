@@ -1,18 +1,18 @@
 import Input from '@/components/ui/Input'
 import React, { useContext, useEffect, useState } from 'react'
 import CanvasContext from '../context/CanvasContext'
+import CanvasSizeContext from '../context/CanvasSizeContext'
 
 export default function CanvasSettings() {
-  const [canvasWidth, setCanvasWidth] = useState(500)
-  const [canvasHeight, setCanvasHeight] = useState(450)
+  const {
+    canvasWidth, setCanvasWidth,
+    canvasHeight, setCanvasHeight
+  } = useContext(CanvasSizeContext)
+
   const {canvasEditor} = useContext(CanvasContext)
 
   useEffect(() => {
     if (canvasEditor) {
-      // canvasEditor.set({
-      //   width: canvasWidth,
-      //   height: canvasHeight
-      // })
       canvasEditor.setDimensions({
         width: canvasWidth,
         height: canvasHeight
