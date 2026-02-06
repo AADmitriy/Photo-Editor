@@ -20,7 +20,7 @@ export default function useDrawRect(canvasEditor, startPosState, shapeState) {
       width: 0,
       height: 0,
       fill: "#ff0000",
-      stroke: 'black',
+      stroke: '#000000',
       strokeWidth: 2,
       selectable: true,
       hasControls: true,

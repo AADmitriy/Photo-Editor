@@ -18,7 +18,7 @@ export default function useDrawCircle(canvasEditor, startPosState, shapeState) {
       originY: 'center',
       radius: 0,
       fill: "#2F4DC6",
-      stroke: 'black',
+      stroke: '#000000',
       strokeWidth: 2,
       selectable: true,
       hasControls: true,

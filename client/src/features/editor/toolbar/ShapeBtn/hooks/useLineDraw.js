@@ -11,7 +11,7 @@ export default function useLineDraw(canvasEditor, shapeState) {
 
     const pointer = canvasEditor.getViewportPoint(event.e);
     const newLine = new Line([pointer.x, pointer.y, pointer.x, pointer.y], {
-      stroke: 'black',
+      stroke: '#000000',
       strokeWidth: 2,
       selectable: true,
       hasControls: true,

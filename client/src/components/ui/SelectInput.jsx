@@ -37,7 +37,8 @@ export default function SelectInput({label, value, options, onChange}) {
                             bg-white shadow-2xl flex flex-col p-1.5">
               {options.map(option => (
                 <button className="px-1.5 py-0.5 text-left hover:bg-neutral-200"
-                        onClick={() => {changeToOption(option)}}>
+                        onClick={() => {changeToOption(option)}}
+                        key={option}>
                   {option}
                 </button>
               ))}

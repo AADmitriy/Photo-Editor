@@ -19,7 +19,7 @@ export default function useTriangleDraw(canvasEditor, startPosState, shapeState)
       width: 0,
       height: 0,
       fill: "#31F7AA",
-      stroke: 'black',
+      stroke: '#000000',
       strokeWidth: 2,
       selectable: true,
       hasControls: true,
