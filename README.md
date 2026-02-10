@@ -1,5 +1,10 @@
 # Photo-Editor
 
+Developed using:
+- React
+- Tailwind CSS
+- Fabric.js
+
 This site has such features as:
 - Use filters on images
 - Draw using drawing mode
